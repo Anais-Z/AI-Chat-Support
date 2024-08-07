@@ -17,9 +17,10 @@ export default function Home() {
     height="100vh"
     display="flex"
     flexDirection="column"
-    justifyContent="flex-end">
+    justifyContent="center"
+    alignItems="center">
 
-      <Stack direction={'column'}>
+      <Stack direction={'column'} width="500px" height="700px" border="1px solid black" p={2}>
         <Stack direction={"column"} spacing={2}>
           {
             messages.map( (message, index) => (
