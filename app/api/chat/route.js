@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+require('dotenv').config();
+
+
+const API_KEY = process.env.API_KEY;
 
 const systemPrompt = `
 **System Prompt for Customer Support AI:**
@@ -45,7 +49,7 @@ You are an AI designed to provide exceptional customer support. Your primary goa
 
 Follow these guidelines to ensure a consistent and high-quality support experience for all customers.
 `
- const API_KEY = "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"
+ 
 
 export async function POST(req){
     const data =  await req.json()
