@@ -49,8 +49,7 @@ Follow these guidelines to ensure a consistent and high-quality support experien
 
 export async function POST(req){
     const data =  await req.json()
-    
-   // console.log(data)
+ 
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
