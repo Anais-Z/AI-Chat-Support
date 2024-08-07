@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import OpenAI from "openai"
+
+require('dotenv').config();
+const API_KEY = process.env.API_KEY;
 
 const systemPrompt = `
 **System Prompt for Customer Support AI:**
@@ -45,25 +49,46 @@ You are an AI designed to provide exceptional customer support. Your primary goa
 
 Follow these guidelines to ensure a consistent and high-quality support experience for all customers.
 `
-export async function POST(req){
-    const data =  await req.json()
- 
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      "model": "openai/gpt-3.5-turbo",
-      "messages": [
-        {"role": "system", "content": `${systemPrompt}`}, data
-      ],
-    })
-  });
+export async function POST(req) {
+   const data = await req.json();
+   console.log('Received data:', data);
 
-  const routerData = await response.json();
+   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+       method: "POST",
+       headers: {
+           "Authorization": `Bearer ${API_KEY}`,
+           "Content-Type": "application/json"
+       },
+       body: JSON.stringify({
+           "model": "openai/gpt-3.5-turbo",
+           "messages": [
+               {"role": "system", "content": `${systemPrompt}`}, ...data
+           ],
+       })
+   });
 
+   const rawResponseText = await response.text();
+   console.log('Raw Response Text:', rawResponseText);
 
-    return NextResponse.json({message: routerData.choices[0].message.content}, {status: 200})
+   const routerData = JSON.parse(rawResponseText);
+
+   // Log the detailed routerData
+   console.log('Router Data:', JSON.stringify(routerData, null, 2));
+
+   if (routerData.choices && routerData.choices.length > 0) {
+       const messageContent = routerData.choices[0].message.content;
+       console.log('Message Content:', messageContent);
+       return NextResponse.json({ message: messageContent }, { status: 200 });
+   } else {
+       console.error('Invalid format for choices:', routerData.choices);
+       return NextResponse.json({ error: 'Invalid response format' }, { status: 500 });
+   }
 }
+
+ 
+
+ 
+
+ 
+ 
+ 
