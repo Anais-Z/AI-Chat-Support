@@ -4,12 +4,17 @@
 
 import { useState } from "react";
 import { Box, Modal, Stack, TextField, Typography, Button, List } from "@mui/material";
+import { deepPurple, lightBlue} from '@mui/material/colors';
+import { light } from "@mui/material/styles/createPalette";
 
 export default function Home() {
   const [messages, setMessages] = useState([{
     role: "assistant",
     content: "Hi, I'm the customer support assistant. How can I help you today?"
   }])
+
+  const userTextBackgroundColor = deepPurple['A400'] 
+ 
 
   const [message, setMessage] = useState('')
 
@@ -81,7 +86,7 @@ export default function Home() {
                 justifyContent={message.role == 'assistant' ? 'flex-start' : 'flex-end'}
               >
                 <Box
-                bgcolor={message.role == 'assistant' ? 'primary.main' : 'secondary.main'}
+                bgcolor={message.role == 'assistant' ? 'primary.main' : userTextBackgroundColor}
                 color = "white"
                 borderRadius={16}
                 p={2}
@@ -97,7 +102,12 @@ export default function Home() {
           <TextField label="Message" fullWidth
           value={message}
           onChange={(e) => setMessage(e.target.value)}/>
-          <Button variant="contained" onClick={sendMessage}> Send</Button>
+          <Button variant="contained" 
+           onClick={sendMessage}
+           sx={{
+            backgroundColor: "#039be5"
+           }}
+          > Send</Button>
         </Stack>
       </Stack>
 
